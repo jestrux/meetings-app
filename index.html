@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>NIC Meetings</title>
+		<link rel="stylesheet" href="assets//css/bootstrap.min.css" />
+	</head>
+	<body
+		class="vh-100 d-flex align-items-center justify-content-center" style="background-color: #F5F5F5;"
+	>
+		<form style="width: 500px">
+			<h3 class="mb-3">Sign in to NIC Meetings</h3>
+
+			<div
+				id="alertMessage"
+				class="alert alert-success alert-dismissible fade show"
+				role="alert"
+				style="display: none"
+			>
+				<strong>Success!</strong> We'll get back to you soon.
+
+				<button
+					type="button"
+					class="close"
+					data-dismiss="alert"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="form-group">
+				<label for="exampleInputEmail1">Email address</label>
+				<input
+					type="email"
+					class="form-control form-control-lg"
+					id="exampleInputEmail1"
+					aria-describedby="emailHelp"
+				/>
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword1">Password</label>
+				<input
+					type="password"
+					class="form-control form-control-lg"
+					id="exampleInputPassword1"
+				/>
+			</div>
+			<div class="form-group form-check form-check-lg">
+				<input
+					type="checkbox"
+					class="form-check-input"
+					id="exampleCheck1"
+				/>
+				<label class="form-check-label" for="exampleCheck1"
+					>Remember me</label
+				>
+			</div>
+			<button type="submit" class="btn btn-block btn-lg btn-primary">
+				Submit
+			</button>
+		</form>
+
+		<script src="assets/js/jquery.min.js"></script>
+	</body>
+</html>
