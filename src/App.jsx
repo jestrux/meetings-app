@@ -1,81 +1,60 @@
+import { useState } from "react";
+
 function App() {
+	const [hideText, setHideText] = useState(false);
+	const [attendees, setAttendees] = useState(
+		JSON.parse(localStorage.meetingMembers ?? "[]")
+	);
+
+	const hideMachaba = () => {
+		const newAttendees = attendees.filter((attendee) => {
+			return attendee != "Chaba";
+		});
+
+		setAttendees(newAttendees);
+	};
+
+	const clearAttendees = () => {
+		setAttendees([]);
+	};
+
+	const preFillAttendees = () => {
+		setAttendees(["Chaba", "Effort", "Sharif"]);
+	};
+
 	return (
-		<main className="bg-white shadow-sm w-75 rounded-lg row overflow-hidden">
-			<div className="col-6 border p-0 position-relative">
-				<img
-					className="position-absolute w-100 h-100"
-					src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxNjE2NXwwfDF8c2VhcmNofDF8fGZhbmN5JTIwaG91c2V8ZW58MHx8fHwxNjg3NDEzNTg3fDA&ixlib=rb-4.0.3&q=80&w=1080"
-					alt=""
-					style={{ objectFit: "cover" }}
-				/>
+		<main className="">
+			<div className="bg-white p-3">
+				<p style={{ display: hideText ? "none" : "" }}>Some content</p>
+
+				<button onClick={() => setHideText(!hideText)}>
+					Toggle content
+				</button>
 			</div>
 
-			<div
-				className="col"
-				style={{ paddingTop: "3.5rem", paddingBottom: "4rem" }}
-			>
-				<div className="p-5">
-					<h3 className="mb-3">Sign in to NIC Meetings</h3>
+			<div className="mt-5">
+				<h3>Meeting attendees</h3>
 
-					<div
-						id="alertMessage"
-						className="alert alert-success alert-dismissible fade show"
-						role="alert"
-						style={{ display: "none" }}
-					>
-						<strong>Success!</strong> We'll get back to you soon.
-						<button
-							type="button"
-							className="close"
-							data-dismiss="alert"
-							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
+				<ul>
+					{attendees.map((name, index) => {
+						return <li key={index}>{name}</li>;
+					})}
+				</ul>
 
-					<form>
-						<div className="form-group">
-							<label htmlFor="exampleInputEmail1">
-								Email address
-							</label>
-							<input
-								type="email"
-								className="form-control form-control-lg"
-								id="exampleInputEmail1"
-								aria-describedby="emailHelp"
-							/>
-						</div>
-						<div className="form-group">
-							<label htmlFor="exampleInputPassword1">
-								Password
-							</label>
-							<input
-								type="password"
-								className="form-control form-control-lg"
-								id="exampleInputPassword1"
-							/>
-						</div>
-						<div className="form-group form-check form-check-lg">
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="exampleCheck1"
-							/>
-							<label
-								className="form-check-label"
-								htmlFor="exampleCheck1"
-							>
-								Remember me
-							</label>
-						</div>
-						<button
-							type="submit"
-							className="btn btn-block btn-lg btn-primary"
-						>
-							Submit
+				<div className="mt-4">
+					<button onClick={hideMachaba}>
+						Remove second attendee
+					</button>
+
+					{attendees.length > 0 ? (
+						<button onClick={clearAttendees}>
+							Clear attendees
 						</button>
-					</form>
+					) : (
+						<button onClick={preFillAttendees}>
+							Prefill attendees
+						</button>
+					)}
 				</div>
 			</div>
 		</main>
