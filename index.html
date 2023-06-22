@@ -27,24 +27,29 @@
 
 					<div
 						id="alertMessage"
-						class="alert alert-success alert-dismissible fade show"
+						class="alert alert-dismissible fade show"
+						:class="{'alert-success': message.type == 'success', 'alert-danger': message.type == 'error'}"
 						role="alert"
-						style="display: none"
+						v-show="message.visible"
 					>
-						<strong>Success!</strong> We'll get back to you soon.
+						<strong style="text-transform: capitalize"
+							>{{message.type}}!</strong
+						>
+						{{ message.type == "error" ? message.errorContent :
+						message.content }}
 
 						<button
 							type="button"
 							class="close"
 							data-dismiss="alert"
 							aria-label="Close"
-							onclick="toggleAlert()"
+							@click="message.visible = false"
 						>
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 
-					<form>
+					<form @submit.prevent="login($event)">
 						<div class="form-group">
 							<label for="exampleInputEmail1"
 								>Email address</label
@@ -53,6 +58,7 @@
 								type="email"
 								class="form-control form-control-lg"
 								id="exampleInputEmail1"
+								name="email"
 								aria-describedby="emailHelp"
 							/>
 						</div>
@@ -77,8 +83,9 @@
 						<button
 							type="submit"
 							class="btn btn-block btn-lg btn-primary"
+							:class="{'disabled': loading}"
 						>
-							Submit
+							{{loading ? 'Loading...' : 'Submit'}}
 						</button>
 					</form>
 				</div>
@@ -90,8 +97,31 @@
 			createApp({
 				data() {
 					return {
-						message: "Hello Vue!",
+						message: {
+							visible: false,
+							type: "success",
+							content: "We'll get back to you soon.",
+							errorContent: "Something went wrong",
+						},
+						loading: false,
 					};
+				},
+				methods: {
+					login(e) {
+						const form = e.target;
+						const email = new FormData(form).get("email");
+						this.loading = true;
+						const error = email != "wakyj07@gmail.com";
+
+						setTimeout(() => {
+							this.loading = false;
+
+							this.message.type = error ? "error" : "success";
+							this.message.visible = true;
+
+							form.reset();
+						}, 2000);
+					},
 				},
 			}).mount("body");
 		</script>
