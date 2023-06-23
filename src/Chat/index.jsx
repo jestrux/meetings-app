@@ -46,9 +46,14 @@ const persistEntry = (key, value) => {
 	localStorage.setItem(key, JSON.stringify(value));
 };
 
+const getPersistedEntry = (key, defaultValue) => {
+	if (localStorage.getItem(key)) return JSON.parse(localStorage.getItem(key));
+	return defaultValue;
+};
+
 const Chat = () => {
 	const [newMessage, setNewMessage] = useState("");
-	const [messages, setMessages] = useState(getChat());
+	const [messages, setMessages] = useState(getPersistedEntry("messages"), []);
 	const [isDarkMode, setisDarkMode] = useState(false);
 	const [isWhatsapp, setisWhatsapp] = useState(false);
 	const [sent, setSent] = useState(false);
