@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import loader from "./assets/loader.gif";
 
 const someTime = (duration = 2000) => {
 	return new Promise((resolve) => {
@@ -18,9 +19,18 @@ function saveAttendees(value) {
 }
 
 function App() {
+	const [loading, setLoading] = useState(true);
 	const [attendees, setAttendees] = useState([]);
 
-	getAttendees().then((res) => setAttendees(res));
+	useEffect(() => {
+		fetchAttendees();
+	}, []);
+
+	const fetchAttendees = async () => {
+		const res = await getAttendees();
+		setAttendees(res);
+		setLoading(false);
+	};
 
 	const persistAttendees = (attendees) => {
 		setAttendees(attendees);
@@ -40,6 +50,8 @@ function App() {
 		<main className="">
 			<div className="mt-5">
 				<h3>Meeting attendees</h3>
+
+				{loading && <img width="90px" src={loader} />}
 
 				<ul>
 					{attendees.map((name, index) => {
