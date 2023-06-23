@@ -1,29 +1,43 @@
 import { useState } from "react";
 
-function getAttendees() {}
+const someTime = (duration = 2000) => {
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve();
+		}, duration);
+	});
+};
 
-function saveAttendees() {}
+async function getAttendees() {
+	await someTime();
+	return JSON.parse(localStorage.getItem("attendees") ?? "[]");
+}
+
+function saveAttendees(value) {
+	localStorage.setItem("attendees", JSON.stringify(value));
+}
 
 function App() {
-	const [hideText, setHideText] = useState(false);
-	const [attendees, setAttendees] = useState();
+	const [attendees, setAttendees] = useState([]);
 
-	const hideSecond = () => {};
+	getAttendees().then((res) => setAttendees(res));
 
-	const clearAttendees = () => {};
+	const persistAttendees = (attendees) => {
+		setAttendees(attendees);
+		saveAttendees(attendees);
+	};
 
-	const preFillAttendees = () => {};
+	const hideSecond = () => {
+		persistAttendees(attendees.filter((_, index) => index != 1));
+	};
+
+	const clearAttendees = () => persistAttendees([]);
+
+	const preFillAttendees = () =>
+		persistAttendees(["Daniel", "Chaba", "Debora"]);
 
 	return (
 		<main className="">
-			<div className="bg-white p-3">
-				<p style={{ display: hideText ? "none" : "" }}>Some content</p>
-
-				<button onClick={() => setHideText(!hideText)}>
-					Toggle content
-				</button>
-			</div>
-
 			<div className="mt-5">
 				<h3>Meeting attendees</h3>
 
@@ -34,12 +48,20 @@ function App() {
 				</ul>
 
 				<div className="mt-4">
-					<button>Remove second attendee</button>
+					{attendees.length > 1 && (
+						<button onClick={hideSecond}>
+							Remove second attendee
+						</button>
+					)}
 
 					{attendees.length > 0 ? (
-						<button>Clear attendees</button>
+						<button onClick={clearAttendees}>
+							Clear attendees
+						</button>
 					) : (
-						<button>Prefill attendees</button>
+						<button onClick={preFillAttendees}>
+							Prefill attendees
+						</button>
 					)}
 				</div>
 			</div>
