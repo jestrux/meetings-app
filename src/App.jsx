@@ -19,6 +19,7 @@ function saveAttendees(value) {
 }
 
 function App() {
+	const [saving, setSaving] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [attendees, setAttendees] = useState([]);
 
@@ -46,6 +47,21 @@ function App() {
 	const preFillAttendees = () =>
 		persistAttendees(["Daniel", "Chaba", "Debora"]);
 
+	const addAttendee = async (e) => {
+		e.preventDefault();
+		const newAttendee = e.target.newAttendee.value;
+		const exists = attendees
+			.map((a) => a.toLowerCase())
+			.includes(newAttendee.toLowerCase());
+
+		if (exists) return alert(`Attendee: ${newAttendee} already exists!`);
+
+		setSaving(true);
+		persistAttendees([...attendees, newAttendee]);
+		await someTime();
+		setSaving(false);
+	};
+
 	return (
 		<main className="">
 			<div className="mt-5">
@@ -58,6 +74,22 @@ function App() {
 						return <li key={index}>{name}</li>;
 					})}
 				</ul>
+
+				<form
+					onSubmit={addAttendee}
+					style={{ pointerEvents: loading || saving ? "none" : "" }}
+				>
+					<input
+						type="text"
+						required
+						minLength="3"
+						name="newAttendee"
+						placeholder="New attendee"
+					/>
+					<button>
+						{saving ? <img width="40px" src={loader} /> : "Add"}
+					</button>
+				</form>
 
 				<div className="mt-4">
 					{attendees.length > 1 && (
