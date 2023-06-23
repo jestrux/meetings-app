@@ -51,12 +51,23 @@ const getPersistedEntry = (key, defaultValue) => {
 	return defaultValue;
 };
 
+const useLocalStorageState = (key, defaultValue) => {
+	const [value, _setValue] = useState(getPersistedEntry(key, defaultValue));
+
+	const setValue = (value) => {
+		_setValue(value);
+		persistEntry(key, value);
+	};
+
+	return [value, setValue];
+};
+
 const Chat = () => {
 	const [newMessage, setNewMessage] = useState("");
-	const [messages, setMessages] = useState(getPersistedEntry("messages"), []);
-	const [isDarkMode, setisDarkMode] = useState(false);
-	const [isWhatsapp, setisWhatsapp] = useState(false);
-	const [sent, setSent] = useState(false);
+	const [messages, setMessages] = useLocalStorageState("messages", []);
+	const [isDarkMode, setisDarkMode] = useLocalStorageState("dark", false);
+	const [isWhatsapp, setisWhatsapp] = useLocalStorageState("whatsapp", false);
+	const [sent, setSent] = useLocalStorageState("sent", false);
 	const quickEmojis = ["😂", "😡", "😍", "🥰", "🤦‍♂️", "🙄", "👋"];
 
 	const updateMessages = (messages) => {
