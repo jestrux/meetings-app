@@ -23,96 +23,118 @@ const getChat = () => {
 			sent: true,
 			content: "Oh that? Grow up, I was just kidding😅",
 		},
-		{
-			sent: false,
-			content: "Utani gani hauna emoji?😂😂",
-		},
-		{
-			sent: true,
-			content: "Just get lost weirdo😏",
-		},
-		{
-			sent: true,
-			content: "Oh btw, whatever happened to my copy of HP?",
-		},
-		{
-			sent: false,
-			content: "Oh I sold that😂😂😂",
-		},
-		{
-			sent: true,
-			content: "WTF, it wasn't mine😧",
-		},
+		// {
+		// 	sent: false,
+		// 	content: "Utani gani hauna emoji?😂😂",
+		// },
+		// {
+		// 	sent: true,
+		// 	content: "Just get lost weirdo😏",
+		// },
+		// {
+		// 	sent: true,
+		// 	content: "Oh btw, whatever happened to my copy of HP?",
+		// },
+		// {
+		// 	sent: false,
+		// 	content: "Oh I sold that😂😂😂",
+		// },
 	];
 };
 
+const persistEntry = (key, value) => {
+	localStorage.setItem(key, JSON.stringify(value));
+};
+
 const Chat = () => {
+	const [newMessage, setNewMessage] = useState("");
 	const [messages, setMessages] = useState(getChat());
+	const [isDarkMode, setisDarkMode] = useState(false);
+	const [isWhatsapp, setisWhatsapp] = useState(false);
+	const [sent, setSent] = useState(false);
+	const quickEmojis = ["😂", "😡", "😍", "🥰", "🤦‍♂️", "🙄", "👋"];
+
+	const updateMessages = (messages) => {
+		persistEntry("messages", messages);
+		setMessages(messages);
+	};
+
+	function toggleInput(label, value, handler) {
+		return (
+			<div className="flex items-center">
+				{label}:
+				<button
+					id="darkModeButton"
+					className={`flex toggle-button ${value && "on"}`}
+					onClick={() => handler(!value)}
+				>
+					<span>&nbsp;</span>
+				</button>
+			</div>
+		);
+	}
+
+	const handleAddMessage = (e) => {
+		e.preventDefault();
+
+		updateMessages([
+			...messages,
+			{
+				sent,
+				content: newMessage,
+			},
+		]);
+
+		setNewMessage("");
+	};
+
 	return (
 		<div className="d-flex flex-col center-center">
 			<div className="flex items-center mb-4">
-				<div className="flex items-center">
-					Dark mode:
-					<button
-						id="darkModeButton"
-						className="flex toggle-button"
-					>
-						<span>&nbsp;</span>
-					</button>
-				</div>
-
+				{toggleInput("Dark mode", isDarkMode, setisDarkMode)}
 				&emsp;
-
-				<div className="flex items-center">
-					Whatsapp:
-					<button
-						id="darkModeButton"
-						className="flex toggle-button"
-					>
-						<span>&nbsp;</span>
-					</button>
-				</div>
-
+				{toggleInput("Whatsapp", isWhatsapp, setisWhatsapp)}
 				&emsp;
-
-				<div className="flex items-center">
-					Sent:
-					<button
-						id="darkModeButton"
-						className="flex toggle-button"
-					>
-						<span>&nbsp;</span>
-					</button>
-				</div>
+				{toggleInput("Sent", sent, setSent)}
 			</div>
 
-			<div id="lisimu" className="flex flex-col dark-modes whatsapp">
-				<div className="message">
-					Ahem...ignoring what you said there👋
-				</div>
-
-				<div className="message sent">What did I say?🤔</div>
+			<div id="lisimu" className="flex flex-col">
+				{messages.map((message, index) => (
+					<div
+						className={`message ${message.sent && "sent"}`}
+						key={index}
+					>
+						{message.content}
+					</div>
+				))}
 
 				<div
 					className="position-absolute bg-white w-100 flex flex-col"
 					style={{ left: 0, bottom: 0, padding: "0.5rem" }}
 				>
-					<div>
+					<form onSubmit={handleAddMessage}>
 						<input
 							className="form-control"
 							type="text"
 							placeholder="Enter new message here"
+							name="newMessage"
+							value={newMessage}
+							onChange={(e) => setNewMessage(e.target.value)}
 						/>
-					</div>
+					</form>
 
 					<div className="flex items-center justify-content-between">
-						<button className="emoji-button">😂</button>
-						<button className="emoji-button">😡</button>
-						<button className="emoji-button">😍</button>
-						<button className="emoji-button">🥰</button>
-						<button className="emoji-button">🤦‍♂️</button>
-						<button className="emoji-button">🙄</button>
-						<button className="emoji-button">👋</button>
+						{quickEmojis.map((emoji, index) => (
+							<button
+								key={index}
+								className="emoji-button"
+								onClick={() =>
+									setNewMessage(newMessage + emoji)
+								}
+							>
+								{emoji}
+							</button>
+						))}
 					</div>
 				</div>
 			</div>
