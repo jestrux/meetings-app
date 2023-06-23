@@ -1,26 +1,18 @@
 import { useState } from "react";
 
+function getAttendees() {}
+
+function saveAttendees() {}
+
 function App() {
 	const [hideText, setHideText] = useState(false);
-	const [attendees, setAttendees] = useState(
-		JSON.parse(localStorage.meetingMembers ?? "[]")
-	);
+	const [attendees, setAttendees] = useState();
 
-	const hideMachaba = () => {
-		const newAttendees = attendees.filter((attendee) => {
-			return attendee != "Chaba";
-		});
+	const hideSecond = () => {};
 
-		setAttendees(newAttendees);
-	};
+	const clearAttendees = () => {};
 
-	const clearAttendees = () => {
-		setAttendees([]);
-	};
-
-	const preFillAttendees = () => {
-		setAttendees(["Chaba", "Effort", "Sharif"]);
-	};
+	const preFillAttendees = () => {};
 
 	return (
 		<main className="">
@@ -42,18 +34,12 @@ function App() {
 				</ul>
 
 				<div className="mt-4">
-					<button onClick={hideMachaba}>
-						Remove second attendee
-					</button>
+					<button>Remove second attendee</button>
 
 					{attendees.length > 0 ? (
-						<button onClick={clearAttendees}>
-							Clear attendees
-						</button>
+						<button>Clear attendees</button>
 					) : (
-						<button onClick={preFillAttendees}>
-							Prefill attendees
-						</button>
+						<button>Prefill attendees</button>
 					)}
 				</div>
 			</div>
