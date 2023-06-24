@@ -1,6 +1,14 @@
 import { useState } from "react";
 import "./chat.css";
 
+const someTime = (duration = 2000) => {
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve();
+		}, duration);
+	});
+};
+
 const getChat = () => {
 	return [
 		{
@@ -64,6 +72,7 @@ const useLocalStorageState = (key, defaultValue) => {
 
 const Chat = () => {
 	const [newMessage, setNewMessage] = useState("");
+	const [showEmojis, setShowEmojis] = useState(false);
 	const [messages, setMessages] = useLocalStorageState(
 		"new-messages",
 		getChat()
@@ -72,11 +81,6 @@ const Chat = () => {
 	const [isWhatsapp, setisWhatsapp] = useLocalStorageState("whatsapp", false);
 	const [sent, setSent] = useLocalStorageState("sent", false);
 	const quickEmojis = ["😂", "😡", "😍", "🥰", "🤦‍♂️", "🙄", "👋"];
-
-	const updateMessages = (messages) => {
-		persistEntry("messages", messages);
-		setMessages(messages);
-	};
 
 	function toggleInput(label, value, handler) {
 		return (
@@ -93,18 +97,34 @@ const Chat = () => {
 		);
 	}
 
-	const handleAddMessage = (e) => {
+	const handleAddMessage = async (e) => {
 		e.preventDefault();
 
-		updateMessages([
+		setShowEmojis(false);
+
+		setNewMessage("");
+
+		const newMessageId = messages.length;
+
+		const newMessages = [
 			...messages,
 			{
+				id: newMessageId,
+				pending: true,
 				sent,
 				content: newMessage,
 			},
-		]);
+		];
+		setMessages(newMessages);
 
-		setNewMessage("");
+		await someTime();
+
+		const updatedMessages = newMessages.map((message) => {
+			if (message.id == newMessageId) message.pending = false;
+			return message;
+		});
+
+		setMessages(updatedMessages);
 	};
 
 	return (
@@ -122,6 +142,7 @@ const Chat = () => {
 					{messages.map((message, index) => (
 						<div
 							className={`message ${message.sent && "sent"}`}
+							style={{ opacity: message.pending ? "0.5" : "" }}
 							key={index}
 						>
 							{message.content}
@@ -150,6 +171,7 @@ const Chat = () => {
 								border: "none",
 								background: "transparent",
 							}}
+							onClick={() => setShowEmojis(!showEmojis)}
 						>
 							<svg
 								width="20"
@@ -180,7 +202,10 @@ const Chat = () => {
 						/>
 					</form>
 
-					<div className="flex items-center justify-content-between px-2 pb-1">
+					<div
+						className="flex items-center justify-content-between px-2 pb-1"
+						style={{ display: showEmojis ? "" : "none" }}
+					>
 						{quickEmojis.map((emoji, index) => (
 							<button
 								key={index}
