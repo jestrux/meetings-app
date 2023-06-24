@@ -127,6 +127,11 @@ const Chat = () => {
 		setMessages(updatedMessages);
 	};
 
+	const removeMessage = (index) => {
+		const newMessages = messages.filter((m, i) => i != index);
+		setMessages(newMessages);
+	};
+
 	return (
 		<div className="d-flex flex-col center-center">
 			<div className="flex items-center mb-4">
@@ -144,6 +149,7 @@ const Chat = () => {
 							className={`message ${message.sent && "sent"}`}
 							style={{ opacity: message.pending ? "0.5" : "" }}
 							key={index}
+							onClick={() => removeMessage(index)}
 						>
 							{message.content}
 						</div>
