@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./chat.css";
+import ToggleInput from "../ToggleInput";
 
 const someTime = (duration = 2000) => {
 	return new Promise((resolve) => {
@@ -82,21 +83,6 @@ const Chat = () => {
 	const [sent, setSent] = useLocalStorageState("sent", false);
 	const quickEmojis = ["😂", "😡", "😍", "🥰", "🤦‍♂️", "🙄", "👋"];
 
-	function toggleInput(label, value, handler) {
-		return (
-			<div className="flex items-center">
-				{label}:
-				<button
-					id="darkModeButton"
-					className={`flex toggle-button ${value && "on"}`}
-					onClick={() => handler(!value)}
-				>
-					<span>&nbsp;</span>
-				</button>
-			</div>
-		);
-	}
-
 	const handleAddMessage = async (e) => {
 		e.preventDefault();
 
@@ -135,11 +121,19 @@ const Chat = () => {
 	return (
 		<div className="d-flex flex-col center-center">
 			<div className="flex items-center mb-4">
-				{toggleInput("Dark mode", isDarkMode, setisDarkMode)}
+				<ToggleInput
+					label="Dark mode"
+					value={isDarkMode}
+					onChange={setisDarkMode}
+				/>
 				&emsp;
-				{toggleInput("Whatsapp", isWhatsapp, setisWhatsapp)}
+				<ToggleInput
+					label="Whatsapp"
+					value={isWhatsapp}
+					onChange={setisWhatsapp}
+				/>
 				&emsp;
-				{toggleInput("Sent", sent, setSent)}
+				<ToggleInput label="Sent" value={sent} onChange={setSent} />
 			</div>
 
 			<div id="lisimu" className="flex flex-col justify-content-end">
