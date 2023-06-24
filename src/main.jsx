@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Chat from './Chat'
+import Game from './Game'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Chat />
+    <Game />
   </React.StrictMode>,
 )
