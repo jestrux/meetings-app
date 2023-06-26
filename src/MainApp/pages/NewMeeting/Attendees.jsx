@@ -15,13 +15,13 @@ const fakeDataUrl = `https://randomuser.me/api/?results=3&inc=name,email,picture
 
 const Attendees = () => {
 	const [loading, setLoading] = useState(true);
-	const [list, setList] = useState([]);
+	const [attendees, setAttendees] = useState([]);
 	useEffect(() => {
 		fetch(fakeDataUrl)
 			.then((res) => res.json())
 			.then((res) => {
 				setLoading(false);
-				setList(res.results);
+				setAttendees(res.results);
 			});
 	}, []);
 
@@ -32,7 +32,7 @@ const Attendees = () => {
 				<List
 					loading={loading}
 					itemLayout="horizontal"
-					dataSource={list}
+					dataSource={attendees}
 					renderItem={(item) => (
 						<List.Item>
 							<Skeleton
