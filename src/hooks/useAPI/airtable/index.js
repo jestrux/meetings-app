@@ -312,7 +312,7 @@ export function useDelayedAirtableFetch({
 		},
 	});
 
-	const fetch = (payload) => {
+	const fetch = (payload = {}) => {
 		const promise = new Promise((res, rej) => {
 			successResolver.current = res;
 			errorResolver.current = rej;

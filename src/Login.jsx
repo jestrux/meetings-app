@@ -1,9 +1,48 @@
+import { useState } from "react";
+import { Button } from "antd";
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import useAPI from "./hooks/useAPI";
+import { saveValueToLocalStorage } from "./hooks/useLocalStorageState";
+
+function formDataObject(form) {
+	return Array.from(new FormData(form)).reduce(
+		(agg, [key, value]) => ({
+			...agg,
+			[key]: value,
+		}),
+		{}
+	);
+}
 
 const Login = () => {
-	// Returns promise
-	const { login } = useAPI();
-	const handleLogin = () => {};
+	const [login, { loading: authenticating }] = useAPI("/login");
+	const [showPassword, setShowPassword] = useState(null);
+	const [message, setMessage] = useState(null);
+
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		const form = e.target;
+
+		setMessage(null);
+
+		const res = await login(formDataObject(form));
+
+		if (res?.id) {
+			setMessage({
+				type: "success",
+				content: "We'll get back to you soon.",
+			});
+
+			form.reset();
+
+			saveValueToLocalStorage("authUser", res);
+		} else {
+			setMessage({
+				type: "error",
+				content: "Whoops! Wrong credentials!",
+			});
+		}
+	};
 
 	return (
 		<div
@@ -27,23 +66,31 @@ const Login = () => {
 					<div className="p-5">
 						<h3 className="mb-3">Sign in to NIC Meetings</h3>
 
-						<div
-							id="alertMessage"
-							className="alert alert-success alert-dismissible fade show"
-							role="alert"
-							style={{ display: "none" }}
-						>
-							<strong>Success!</strong> We'll get back to you
-							soon.
-							<button
-								type="button"
-								className="close"
-								data-dismiss="alert"
-								aria-label="Close"
+						{message && (
+							<div
+								id="alertMessage"
+								className={`alert ${
+									message.type == "success"
+										? "alert-success"
+										: "alert-danger"
+								} alert-dismissible fade show`}
+								role="alert"
 							>
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
+								<strong className="text-capitalize">
+									{message.type}!
+								</strong>
+								{message.content}
+								<button
+									type="button"
+									className="close"
+									data-dismiss="alert"
+									aria-label="Close"
+									onClick={() => setMessage(null)}
+								>
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						)}
 
 						<form onSubmit={handleLogin}>
 							<div className="form-group">
@@ -62,12 +109,50 @@ const Login = () => {
 								<label htmlFor="exampleInputPassword1">
 									Password
 								</label>
-								<input
-									type="password"
-									className="form-control form-control-lg"
-									name="password"
-									id="exampleInputPassword1"
-								/>
+
+								<div className="position-relative">
+									<input
+										type={
+											showPassword ? "text" : "password"
+										}
+										className="form-control form-control-lg"
+										name="password"
+										id="exampleInputPassword1"
+									/>
+
+									<Button
+										className="position-absolute"
+										type="text"
+										icon={
+											!showPassword ? (
+												<EyeOutlined
+													size="sm"
+													style={{
+														verticalAlign: 0,
+													}}
+												/>
+											) : (
+												<EyeInvisibleOutlined
+													size="sm"
+													style={{
+														verticalAlign: 0,
+													}}
+												/>
+											)
+										}
+										size="sm"
+										shape="circle"
+										style={{
+											right: "0.35rem",
+											top: 0,
+											bottom: 0,
+											margin: "auto",
+										}}
+										onClick={() =>
+											setShowPassword(!showPassword)
+										}
+									/>
+								</div>
 							</div>
 							<div className="form-group form-check form-check-lg">
 								<input
@@ -82,12 +167,16 @@ const Login = () => {
 									Remember me
 								</label>
 							</div>
-							<button
-								type="submit"
-								className="btn btn-block btn-lg btn-primary"
+
+							<Button
+								htmlType="submit"
+								type="primary"
+								size="large"
+								block
+								loading={authenticating}
 							>
-								Submit
-							</button>
+								{authenticating ? "Please wait..." : "Submit"}
+							</Button>
 						</form>
 					</div>
 				</div>
