@@ -20,7 +20,6 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import useAPI from "./hooks/useAPI";
-import { saveValueToLocalStorage } from "./hooks/useLocalStorageState";
 
 function formDataObject(form) {
 	return Array.from(new FormData(form)).reduce(
@@ -32,13 +31,10 @@ function formDataObject(form) {
 	);
 }
 
-const Login = () => {
+const Login = ({ onLogin }) => {
 	const [login, { loading: authenticating }] = useAPI("/login");
 	const [showPassword, setShowPassword] = useState(null);
-	const [message, setMessage] = useState({
-		type: "success",
-		content: "Howdy partner",
-	});
+	const [message, setMessage] = useState(null);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -56,7 +52,7 @@ const Login = () => {
 
 			form.reset();
 
-			saveValueToLocalStorage("authUser", res);
+			onLogin(res);
 		} else {
 			setMessage({
 				type: "error",

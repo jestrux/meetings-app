@@ -12,7 +12,13 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { HomeIcon, CalendarIcon } from "@heroicons/react/20/solid";
 
-const AppLayout = ({ children, onChangePage, currentPage }) => {
+const AppLayout = ({
+	children,
+	authUser,
+	onLogout,
+	onChangePage,
+	currentPage,
+}) => {
 	return (
 		<Box display="flex" bg="gray.100" style={{ height: "100vh" }}>
 			<Box
@@ -75,16 +81,14 @@ const AppLayout = ({ children, onChangePage, currentPage }) => {
 							<Box display="flex" alignItems="center" gap="2">
 								<Avatar
 									size="sm"
-									name="Dan Abrahmov"
-									src="https://bit.ly/dan-abramov"
+									name={authUser.name}
+									src={authUser.avatar}
 								/>
-								Walter Kimaro
+								{authUser.name}
 							</Box>
 						</MenuButton>
 						<MenuList>
-							<MenuItem onClick={() => console.log("Logout")}>
-								Logout
-							</MenuItem>
+							<MenuItem onClick={onLogout}>Logout</MenuItem>
 						</MenuList>
 					</Menu>
 				</Box>
