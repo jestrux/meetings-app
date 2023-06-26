@@ -2,11 +2,9 @@ import {
 	Breadcrumb,
 	BreadcrumbItem,
 	BreadcrumbLink,
-	BreadcrumbSeparator,
 	SimpleGrid,
 	Box,
 	Card,
-	CardHeader,
 	CardBody,
 } from "@chakra-ui/react";
 

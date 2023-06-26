@@ -3,15 +3,13 @@ import AppLayout from "./AppLayout";
 import Dashboard from "./pages/Dashboard";
 import NewMeeting from "./pages/NewMeeting";
 
-const MainApp = ({ authUser, onLogout }) => {
+const MainApp = () => {
 	const [currentPage, setCurrentPage] = useState("New Meeting");
 
 	return (
 		<AppLayout
 			currentPage={currentPage}
 			onChangePage={setCurrentPage}
-			authUser={authUser}
-			onLogout={onLogout}
 			style={{
 				minHeight: "100vh",
 			}}

@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import useAPI from "./hooks/useAPI";
+import { useAuthContext } from "./providers/auth";
 
 function formDataObject(form) {
 	return Array.from(new FormData(form)).reduce(
@@ -31,7 +32,8 @@ function formDataObject(form) {
 	);
 }
 
-const Login = ({ onLogin }) => {
+const Login = () => {
+	const authContext = useAuthContext();
 	const [login, { loading: authenticating }] = useAPI("/login");
 	const [showPassword, setShowPassword] = useState(null);
 	const [message, setMessage] = useState(null);
@@ -52,7 +54,7 @@ const Login = ({ onLogin }) => {
 
 			form.reset();
 
-			onLogin(res);
+			authContext.login(res);
 		} else {
 			setMessage({
 				type: "error",

@@ -46,9 +46,7 @@ const Attendees = () => {
 					))}
 				</Stack>
 			</div>
-
 			<Divider />
-
 			<div>
 				<Heading size="md">New attendee</Heading>
 

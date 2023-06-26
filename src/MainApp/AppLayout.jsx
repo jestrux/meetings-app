@@ -11,14 +11,10 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { HomeIcon, CalendarIcon } from "@heroicons/react/20/solid";
+import { useAuthContext } from "../providers/auth";
 
-const AppLayout = ({
-	children,
-	authUser,
-	onLogout,
-	onChangePage,
-	currentPage,
-}) => {
+const AppLayout = ({ children, onChangePage, currentPage }) => {
+	const { authUser, logout } = useAuthContext();
 	return (
 		<Box display="flex" bg="gray.100" style={{ height: "100vh" }}>
 			<Box
@@ -88,7 +84,7 @@ const AppLayout = ({
 							</Box>
 						</MenuButton>
 						<MenuList>
-							<MenuItem onClick={onLogout}>Logout</MenuItem>
+							<MenuItem onClick={logout}>Logout</MenuItem>
 						</MenuList>
 					</Menu>
 				</Box>
