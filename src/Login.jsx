@@ -3,6 +3,7 @@ import useAPI from "./hooks/useAPI";
 const Login = () => {
 	// Returns promise
 	const { login } = useAPI();
+	const handleLogin = () => {};
 
 	return (
 		<div
