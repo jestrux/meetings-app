@@ -1,4 +1,23 @@
+import useAPI from "./hooks/useAPI";
+
 const Login = () => {
+	const { login, getUsers } = useAPI();
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		const res = await login(formDataObject(e.target));
+		console.log("Res: ", res);
+	};
+
+	function formDataObject(form) {
+		return Array.from(new FormData(form)).reduce(
+			(agg, [key, value]) => ({
+				...agg,
+				[key]: value,
+			}),
+			{}
+		);
+	}
+
 	return (
 		<div
 			className="vh-100 vw-100 d-flex align-items-center justify-content-center"
@@ -39,7 +58,7 @@ const Login = () => {
 							</button>
 						</div>
 
-						<form>
+						<form onSubmit={handleLogin}>
 							<div className="form-group">
 								<label htmlFor="exampleInputEmail1">
 									Email address
@@ -48,6 +67,7 @@ const Login = () => {
 									type="email"
 									className="form-control form-control-lg"
 									id="exampleInputEmail1"
+									name="email"
 									aria-describedby="emailHelp"
 								/>
 							</div>
@@ -58,6 +78,7 @@ const Login = () => {
 								<input
 									type="password"
 									className="form-control form-control-lg"
+									name="password"
 									id="exampleInputPassword1"
 								/>
 							</div>
