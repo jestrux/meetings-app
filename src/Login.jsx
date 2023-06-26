@@ -1,22 +1,8 @@
 import useAPI from "./hooks/useAPI";
 
 const Login = () => {
+	// Returns promise
 	const { login } = useAPI();
-	const handleLogin = async (e) => {
-		e.preventDefault();
-		const res = await login(formDataObject(e.target));
-		console.log("Res: ", res);
-	};
-
-	function formDataObject(form) {
-		return Array.from(new FormData(form)).reduce(
-			(agg, [key, value]) => ({
-				...agg,
-				[key]: value,
-			}),
-			{}
-		);
-	}
 
 	return (
 		<div
