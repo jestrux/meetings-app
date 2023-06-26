@@ -11,7 +11,7 @@ const Dashboard = () => {
 				style={{
 					margin: "16px 0",
 				}}
-				items={[{ title: "User" }, { title: "Bill" }]}
+				items={[{ title: "App" }, { title: "Dashboard" }]}
 			/>
 
 			<div
@@ -20,9 +20,7 @@ const Dashboard = () => {
 					minHeight: 360,
 					background: colorBgContainer,
 				}}
-			>
-				Bill is a cat.
-			</div>
+			></div>
 		</>
 	);
 };
