@@ -4,7 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import NewMeeting from "./pages/NewMeeting";
 
 const App = () => {
-	const [currentPage, setCurrentPage] = useState("Dashboard");
+	const [currentPage, setCurrentPage] = useState("New Meeting");
 	const handleChangePage = (e) => {
 		setCurrentPage(e.key);
 	};
