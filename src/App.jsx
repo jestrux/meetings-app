@@ -2,7 +2,7 @@ import Login from "./Login";
 import MainApp from "./MainApp";
 
 function App() {
-	return <MainApp />;
+	return <Login />;
 }
 
 export default App;
