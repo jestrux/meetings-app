@@ -1,4 +1,22 @@
+import { useState } from "react";
+
 const Login = () => {
+
+	const [isLoading, setLoading] = useState(false)
+
+	const handleSubmitForm = (e) => {
+		e.preventDefault()
+		setLoading(true)
+		let form = new FormData(e.currentTarget)
+		let email = form.get("email")
+		let password = form.get("password")
+
+		console.log(email)
+		console.log(password)
+
+		setLoading(false)
+		e.currentTarget.reset()
+	}
 	return (
 		<div
 			className="vh-100 vw-100 d-flex align-items-center justify-content-center"
@@ -39,15 +57,17 @@ const Login = () => {
 							</button>
 						</div>
 
-						<form>
+						<form onClick={handleSubmitForm}>
 							<div className="form-group">
 								<label htmlFor="exampleInputEmail1">
 									Email address
 								</label>
 								<input
 									type="email"
+									name="email"
 									className="form-control form-control-lg"
 									id="exampleInputEmail1"
+									required={true}
 									aria-describedby="emailHelp"
 								/>
 							</div>
@@ -57,7 +77,9 @@ const Login = () => {
 								</label>
 								<input
 									type="password"
+									name="password"
 									className="form-control form-control-lg"
+									required={true}
 									id="exampleInputPassword1"
 								/>
 							</div>
@@ -77,8 +99,9 @@ const Login = () => {
 							<button
 								type="submit"
 								className="btn btn-block btn-lg btn-primary"
+								disabled={isLoading}
 							>
-								Submit
+								{isLoading? 'loading...': 'submit'}
 							</button>
 						</form>
 					</div>
