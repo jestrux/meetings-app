@@ -5,18 +5,16 @@ import NewMeeting from "./pages/NewMeeting";
 
 const App = () => {
 	const [currentPage, setCurrentPage] = useState("New Meeting");
-	const handleChangePage = (e) => {
-		setCurrentPage(e.key);
-	};
 
 	return (
 		<AppLayout
 			currentPage={currentPage}
-			onChangePage={handleChangePage}
+			onChangePage={setCurrentPage}
 			style={{
 				minHeight: "100vh",
 			}}
 		>
+			{currentPage}
 			{currentPage == "Dashboard" && <Dashboard />}
 			{currentPage == "New Meeting" && <NewMeeting />}
 		</AppLayout>

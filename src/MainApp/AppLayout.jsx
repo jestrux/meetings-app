@@ -1,110 +1,98 @@
-import { useState } from "react";
 import {
-	HomeOutlined,
-	CalendarOutlined,
-	DownOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, Typography, theme, Dropdown, Row, Col } from "antd";
-
-const { Header, Content, Footer, Sider } = Layout;
-const { Title } = Typography;
-
-function getItem(label, icon, children) {
-	return {
-		key: label,
-		icon,
-		children,
-		label,
-	};
-}
+	Box,
+	Heading,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	Button,
+	Avatar,
+	Stack,
+} from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import { HomeIcon, CalendarIcon } from "@heroicons/react/20/solid";
 
 const AppLayout = ({ children, onChangePage, currentPage }) => {
-	const {
-		token: { colorBgContainer },
-	} = theme.useToken();
-
-	const [collapsed, setCollapsed] = useState(false);
-
 	return (
-		<Layout
-			style={{
-				minHeight: "100vh",
-			}}
-		>
-			<Sider
-				theme="light"
-				collapsible
-				collapsed={collapsed}
-				onCollapse={(value) => setCollapsed(value)}
+		<Box display="flex" bg="gray.100" style={{ height: "100vh" }}>
+			<Box
+				bg="white"
+				borderRight="1px solid #eee"
+				shadow
+				width="300px"
+				position="relative"
+				zIndex="50px"
+				p="3"
 			>
-				<div className="demo-logo-vertical" />
-				<Menu
-					// theme="dark"
-					onClick={onChangePage}
-					defaultSelectedKeys={[currentPage]}
-					mode="inline"
-					items={[
-						getItem("Dashboard", <HomeOutlined />),
-						getItem("New Meeting", <CalendarOutlined />),
-					]}
-				/>
-			</Sider>
-			<Layout>
-				<Header
-					style={{
-						padding: 0,
-						background: colorBgContainer,
-					}}
+				<Stack>
+					<Button
+						justifyContent="flex-start"
+						variant={currentPage != "Dashboard" ? "ghost" : "solid"}
+						leftIcon={<HomeIcon width="18px" />}
+						onClick={() => onChangePage("Dashboard")}
+					>
+						Dashboard
+					</Button>
+					<Button
+						justifyContent="flex-start"
+						variant={
+							currentPage != "New Meeting" ? "ghost" : "solid"
+						}
+						leftIcon={<CalendarIcon width="18px" />}
+						onClick={() => onChangePage("New Meeting")}
+					>
+						New Meeting
+					</Button>
+				</Stack>
+			</Box>
+			<Box
+				flex="1"
+				display="flex"
+				flexDirection="column"
+				height="100vh"
+				position="relative"
+				zIndex="50px"
+			>
+				<Box
+					display="flex"
+					alignItems="center"
+					justifyContent="space-between"
+					flexShrink="0"
+					height="16"
+					bg="white"
+					px="6"
 				>
-					<Row align="middle" className="px-3">
-						<Col flex="1 0 auto" className="column Blue">
-							<Title
-								level={3}
-								style={{
-									margin: 0,
-								}}
-							>
-								{currentPage}
-							</Title>
-						</Col>
-						<Col className="column">
-							<Dropdown
-								trigger={["click"]}
-								menu={{
-									items: [
-										{
-											label: <a href="#">Logout</a>,
-											key: "0",
-										},
-									],
-								}}
-							>
-								<a onClick={(e) => e.preventDefault()}>
-									<div className="d-flex align-items-center">
-										<span>Admin</span>&nbsp;
-										<DownOutlined />
-									</div>
-								</a>
-							</Dropdown>
-						</Col>
-					</Row>
-				</Header>
-				<Content
-					style={{
-						margin: "0 16px",
-					}}
-				>
+					<Heading size="md" lineHeight="none">
+						{currentPage}
+					</Heading>
+
+					<Menu>
+						<MenuButton
+							as={Button}
+							variant="ghost"
+							rightIcon={<ChevronDownIcon />}
+						>
+							<Box display="flex" alignItems="center" gap="2">
+								<Avatar
+									size="sm"
+									name="Dan Abrahmov"
+									src="https://bit.ly/dan-abramov"
+								/>
+								Walter Kimaro
+							</Box>
+						</MenuButton>
+						<MenuList>
+							<MenuItem onClick={() => console.log("Logout")}>
+								Logout
+							</MenuItem>
+						</MenuList>
+					</Menu>
+				</Box>
+				<Box flex={1} overflow="auto">
 					{children}
-				</Content>
-				<Footer
-					style={{
-						textAlign: "center",
-					}}
-				>
-					NIC Meetings ©2023
-				</Footer>
-			</Layout>
-		</Layout>
+				</Box>
+			</Box>
+		</Box>
 	);
 };
 

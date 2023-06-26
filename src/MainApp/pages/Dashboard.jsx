@@ -1,27 +1,29 @@
-import { Breadcrumb, theme } from "antd";
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	Box,
+} from "@chakra-ui/react";
 
 const Dashboard = () => {
-	const {
-		token: { colorBgContainer },
-	} = theme.useToken();
-
 	return (
-		<>
-			<Breadcrumb
-				style={{
-					margin: "16px 0",
-				}}
-				items={[{ title: "App" }, { title: "Dashboard" }]}
-			/>
+		<Box p="6">
+			<Breadcrumb separator="/">
+				<BreadcrumbItem>
+					<BreadcrumbLink href="#">App</BreadcrumbLink>
+				</BreadcrumbItem>
+				<BreadcrumbItem>
+					<BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
+				</BreadcrumbItem>
+			</Breadcrumb>
 
 			<div
 				style={{
 					padding: 24,
 					minHeight: 360,
-					background: colorBgContainer,
 				}}
 			></div>
-		</>
+		</Box>
 	);
 };
 

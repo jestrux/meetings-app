@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
 import {
-	Avatar,
-	List,
-	Skeleton,
-	Space,
+	Heading,
+	HStack,
+	Stack,
 	Divider,
 	Input,
-	Typography,
-} from "antd";
-const { Title } = Typography;
-const { Search } = Input;
+	Button,
+	Avatar,
+	Box,
+	Spinner,
+	InputGroup,
+	InputRightElement,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 const fakeDataUrl = `https://randomuser.me/api/?results=3&inc=name,email,picture&noinfo`;
 
@@ -27,49 +29,47 @@ const Attendees = () => {
 
 	return (
 		<div>
-			<div className="pt-4 px-4">
-				<Title level={4}>Meeting attendees</Title>
-				<List
-					loading={loading}
-					itemLayout="horizontal"
-					dataSource={attendees}
-					renderItem={(item) => (
-						<List.Item>
-							<Skeleton
-								avatar
-								title={false}
-								loading={item.loading}
-								active
-							>
-								<List.Item.Meta
-									avatar={<Avatar src={item.picture.large} />}
-									title={
-										<a href="https://ant.design">
-											{item.name?.first} {item.name?.last}
-										</a>
-									}
-									description={item.email}
-								/>
-								{/* <div>content</div> */}
-							</Skeleton>
-						</List.Item>
-					)}
-				/>
+			<div>
+				<Heading size="md">Meeting attendees</Heading>
+				{loading && <Spinner />}
+
+				<Stack spacing={3}>
+					{attendees.map((item, index) => (
+						<HStack key={index}>
+							<Avatar src={item.picture.large} />
+							<Stack>
+								<Box>
+									{item.name?.first} {item.name?.last}
+								</Box>
+							</Stack>
+						</HStack>
+					))}
+				</Stack>
 			</div>
 
 			<Divider />
 
-			<div className="pb-3 px-3">
-				<Title level={4}>New attendee</Title>
+			<div>
+				<Heading size="md">New attendee</Heading>
 
-				<Space.Compact style={{ width: "100%" }}>
-					<Search
+				<InputGroup>
+					<Input
 						placeholder="Enter attendee name"
-						size="large"
-						enterButton="Add"
-						loading
+						size="lg"
+						name="newAttendee"
 					/>
-				</Space.Compact>
+					<InputRightElement>
+						<Button
+							px="3"
+							type="submit"
+							mt="2"
+							mr="2"
+							variant="ghost"
+						>
+							Add
+						</Button>
+					</InputRightElement>
+				</InputGroup>
 			</div>
 		</div>
 	);

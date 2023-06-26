@@ -1,35 +1,41 @@
-import { Breadcrumb, theme, Row, Col } from "antd";
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbSeparator,
+	SimpleGrid,
+	Box,
+	Card,
+	CardHeader,
+	CardBody,
+} from "@chakra-ui/react";
+
 import Attendees from "./Attendees";
 
 const NewMeeting = () => {
-	const {
-		token: { colorBgContainer },
-	} = theme.useToken();
-
 	return (
-		<>
-			<Breadcrumb
-				style={{
-					margin: "16px 0",
-				}}
-				items={[{ title: "App" }, { title: "New Meeting" }]}
-			/>
+		<Box p="6">
+			<Breadcrumb separator="/">
+				<BreadcrumbItem>
+					<BreadcrumbLink href="#">App</BreadcrumbLink>
+				</BreadcrumbItem>
+				<BreadcrumbItem>
+					<BreadcrumbLink href="#">New Meeting</BreadcrumbLink>
+				</BreadcrumbItem>
+			</Breadcrumb>
 
-			<div
-				style={{
-					padding: 24,
-					minHeight: 360,
-					background: colorBgContainer,
-				}}
-			>
-				<Row>
-					<Col className="border rounded-lg" span={12}>
-						<Attendees />
-					</Col>
-					<Col></Col>
-				</Row>
-			</div>
-		</>
+			<SimpleGrid columns={2} spacing={10}>
+				<Box>
+					<Card>
+						<CardBody>
+							<Attendees />
+						</CardBody>
+					</Card>
+				</Box>
+
+				<Box></Box>
+			</SimpleGrid>
+		</Box>
 	);
 };
 
