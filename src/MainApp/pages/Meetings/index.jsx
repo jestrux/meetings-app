@@ -19,20 +19,12 @@ import useAPI from "../../../hooks/useAPI";
 
 const Meetings = () => {
 	const [getMeetings, { loading }] = useAPI("/meetings");
-	const [addMeeting, { loading: addingMeeting }] = useAPI("/add-meeting");
+	// useAPI("/add-meeting");
 	const [meetings, setMeetings] = useState([]);
 
 	useEffect(() => {
 		getMeetings().then((data) => {
 			setMeetings(data);
-		});
-
-		addMeeting({
-			title: "My new meeting",
-			agenda: "A meeting agenda",
-			date: new Date().getTime(),
-			start_time: "08:00 AM",
-			end_time: "08:30 AM",
 		});
 	}, []);
 
