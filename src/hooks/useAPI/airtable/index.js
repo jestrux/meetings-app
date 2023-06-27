@@ -141,7 +141,7 @@ export class AirtableService {
 	}
 
 	async create(payload) {
-		const url = `https://api.airtable.com/v0/appnobMFeViOdmZsV/${this.table}?api_key=${API_KEY}`;
+		const url = `https://api.airtable.com/v0/${DB_ID}/${this.table}?api_key=${API_KEY}`;
 		const body = JSON.stringify({
 			records: [
 				{
@@ -167,7 +167,7 @@ export class AirtableService {
 	}
 
 	async update(rowId, payload) {
-		const url = `https://api.airtable.com/v0/appnobMFeViOdmZsV/${this.table}/${rowId}?api_key=${API_KEY}`;
+		const url = `https://api.airtable.com/v0/${DB_ID}/${this.table}/${rowId}?api_key=${API_KEY}`;
 		const body = JSON.stringify({
 			fields: {
 				...payload,
@@ -188,7 +188,7 @@ export class AirtableService {
 	}
 
 	async delete(rowId) {
-		const url = `https://api.airtable.com/v0/appnobMFeViOdmZsV/${this.table}/${rowId}?api_key=${API_KEY}`;
+		const url = `https://api.airtable.com/v0/${DB_ID}/${this.table}/${rowId}?api_key=${API_KEY}`;
 		// console.log(this.table, url, body);
 
 		const res = await fetch(url, {

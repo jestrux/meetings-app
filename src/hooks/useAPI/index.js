@@ -1,4 +1,4 @@
-import { useDelayedAirtableFetch } from "./airtable";
+import { useAirtableMutation, useDelayedAirtableFetch } from "./airtable";
 
 const useAPI = (endpoint) => {
 	const login = useDelayedAirtableFetch({
@@ -7,6 +7,11 @@ const useAPI = (endpoint) => {
 
 	const meetings = useDelayedAirtableFetch({
 		table: "meetings",
+	});
+
+	const addMeeting = useAirtableMutation({
+		table: "meetings",
+		action: "add",
 	});
 
 	const endpoints = {
@@ -57,6 +62,12 @@ const useAPI = (endpoint) => {
 			},
 			{
 				loading: meetings.processing,
+			},
+		],
+		"/add-meeting": [
+			addMeeting.mutate,
+			{
+				loading: addMeeting.processing,
 			},
 		],
 	};
