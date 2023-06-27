@@ -110,14 +110,14 @@ export class AirtableService {
 							.map((entry) => {
 								return Object.entries(entry).reduce(
 									(agg, [key, value]) => {
-										if (
-											value &&
-											Array.isArray(value) &&
-											value.length === 1 &&
-											(key.indexOf("_") !== -1 ||
-												value[0].indexOf("recd") === 0)
-										)
-											value = value[0];
+										// if (
+										// 	value &&
+										// 	Array.isArray(value) &&
+										// 	value.length === 1 &&
+										// 	(key.indexOf("_") !== -1 ||
+										// 		value[0].indexOf("recd") === 0)
+										// )
+										// 	value = value[0];
 
 										return {
 											...agg,

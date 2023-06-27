@@ -10,7 +10,12 @@ import {
 	Stack,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { HomeIcon, CalendarIcon } from "@heroicons/react/20/solid";
+import {
+	HomeIcon,
+	CalendarIcon,
+	ClockIcon,
+	DocumentIcon,
+} from "@heroicons/react/24/outline";
 import { useAuthContext } from "../providers/auth";
 
 const AppLayout = ({ children, onChangePage, currentPage }) => {
@@ -24,26 +29,70 @@ const AppLayout = ({ children, onChangePage, currentPage }) => {
 				width="300px"
 				position="relative"
 				zIndex="50px"
-				p="3"
 			>
-				<Stack>
+				<Box
+					display="flex"
+					alignItems="flex-end"
+					height="120px"
+					bg="green.700"
+					color="white"
+					py="3.5"
+					px="5"
+					mb="1"
+				>
+					<Heading size="md">NIC Meetings</Heading>
+				</Box>
+				<Stack p="3">
 					<Button
 						justifyContent="flex-start"
-						variant={currentPage != "Dashboard" ? "ghost" : "solid"}
+						color={
+							currentPage == "Dashboard"
+								? "green.700"
+								: "gray.500"
+						}
+						variant={currentPage == "Dashboard" ? "solid" : "ghost"}
 						leftIcon={<HomeIcon width="18px" />}
 						onClick={() => onChangePage("Dashboard")}
 					>
-						Dashboard
+						<Box ml="2">Dashboard</Box>
+					</Button>
+
+					<Button
+						justifyContent="flex-start"
+						color={
+							currentPage == "Meetings" ? "green.700" : "gray.500"
+						}
+						variant={currentPage == "Meetings" ? "solid" : "ghost"}
+						leftIcon={<CalendarIcon width="18px" />}
+						onClick={() => onChangePage("Meetings")}
+					>
+						<Box ml="2">Meetings</Box>
 					</Button>
 					<Button
 						justifyContent="flex-start"
-						variant={
-							currentPage != "New Meeting" ? "ghost" : "solid"
+						color={
+							currentPage == "Pending Actions"
+								? "green.700"
+								: "gray.500"
 						}
-						leftIcon={<CalendarIcon width="18px" />}
-						onClick={() => onChangePage("New Meeting")}
+						variant={
+							currentPage == "Pending Actions" ? "solid" : "ghost"
+						}
+						leftIcon={<ClockIcon width="18px" />}
+						onClick={() => onChangePage("Pending Actions")}
 					>
-						New Meeting
+						<Box ml="2">Pending Actions</Box>
+					</Button>
+					<Button
+						justifyContent="flex-start"
+						color={
+							currentPage == "Files" ? "green.700" : "gray.500"
+						}
+						variant={currentPage == "Files" ? "solid" : "ghost"}
+						leftIcon={<DocumentIcon width="18px" />}
+						onClick={() => onChangePage("Files")}
+					>
+						<Box ml="2">Files</Box>
 					</Button>
 				</Stack>
 			</Box>
@@ -62,7 +111,9 @@ const AppLayout = ({ children, onChangePage, currentPage }) => {
 					flexShrink="0"
 					height="16"
 					bg="white"
-					px="6"
+					pl="6"
+					pr="2"
+					borderBottom="1px solid #eee"
 				>
 					<Heading size="md" lineHeight="none">
 						{currentPage}

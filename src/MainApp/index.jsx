@@ -1,10 +1,12 @@
 import { useState } from "react";
 import AppLayout from "./AppLayout";
 import Dashboard from "./pages/Dashboard";
-import NewMeeting from "./pages/NewMeeting";
+import Meetings from "./pages/Meetings";
+import PendingActions from "./pages/PendingActions";
+import Files from "./pages/Files";
 
 const MainApp = () => {
-	const [currentPage, setCurrentPage] = useState("New Meeting");
+	const [currentPage, setCurrentPage] = useState("Meetings");
 
 	return (
 		<AppLayout
@@ -15,7 +17,9 @@ const MainApp = () => {
 			}}
 		>
 			{currentPage == "Dashboard" && <Dashboard />}
-			{currentPage == "New Meeting" && <NewMeeting />}
+			{currentPage == "Meetings" && <Meetings />}
+			{currentPage == "Pending Actions" && <PendingActions />}
+			{currentPage == "Files" && <Files />}
 		</AppLayout>
 	);
 };
