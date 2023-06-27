@@ -1,25 +1,17 @@
-import Login from "./Login";
-import MainApp from "./MainApp";
-import useLocalStorageState from "./hooks/useLocalStorageState";
-import { AuthContext } from "./providers/auth";
+import { useEffect } from "react";
+import { fetchMeetings } from "./providers/api";
 
 function App() {
-	const [authUser, setAuthUser] = useLocalStorageState("authUser", null);
-	const authContextValues = {
-		authUser,
-		login(user) {
-			setAuthUser(user);
-		},
-		logout() {
-			setAuthUser(null);
-		},
+	useEffect(() => {
+		loadMeetings();
+	}, []);
+
+	const loadMeetings = async () => {
+		const res = await fetchMeetings();
+		console.log("Res: ", res);
 	};
 
-	return (
-		<AuthContext.Provider value={authContextValues}>
-			{!authUser?.id ? <Login /> : <MainApp />}
-		</AuthContext.Provider>
-	);
+	return null;
 }
 
 export default App;
