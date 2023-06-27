@@ -65,7 +65,37 @@ const useAPI = (endpoint) => {
 			},
 		],
 		"/add-meeting": [
-			addMeeting.mutate,
+			async (payload) => {
+				const res = await addMeeting.mutateAsync(payload);
+				const {
+					attendee_ids,
+					attendee_names,
+					attendee_avatars,
+					creator_id,
+					creator_name,
+					creator_avatar,
+					...m
+				} = res.records[0].fields;
+				return {
+					...m,
+					creator: !creator_id
+						? null
+						: {
+								id: creator_id[0],
+								avatar: creator_avatar[0],
+								name: creator_name[0],
+						  },
+					attendees: !attendee_ids
+						? []
+						: attendee_ids.map((id, index) => {
+								return {
+									id,
+									avatar: attendee_avatars[index],
+									name: attendee_names[index],
+								};
+						  }),
+				};
+			},
 			{
 				loading: addMeeting.processing,
 			},

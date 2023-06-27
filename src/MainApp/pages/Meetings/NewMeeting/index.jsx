@@ -1,38 +1,12 @@
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	SimpleGrid,
-	Box,
-	Card,
-	CardBody,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 import Attendees from "./Attendees";
+import NewMeetingForm from "./NewMeetingForm";
 
-const NewMeeting = () => {
+const NewMeeting = ({ onMeetingCreated }) => {
 	return (
-		<Box p="6">
-			<Breadcrumb separator="/">
-				<BreadcrumbItem>
-					<BreadcrumbLink href="#">App</BreadcrumbLink>
-				</BreadcrumbItem>
-				<BreadcrumbItem>
-					<BreadcrumbLink href="#">New Meeting</BreadcrumbLink>
-				</BreadcrumbItem>
-			</Breadcrumb>
-
-			<SimpleGrid columns={2} spacing={10}>
-				<Box>
-					<Card>
-						<CardBody>
-							<Attendees />
-						</CardBody>
-					</Card>
-				</Box>
-
-				<Box></Box>
-			</SimpleGrid>
+		<Box>
+			<NewMeetingForm onMeetingCreated={onMeetingCreated} />
 		</Box>
 	);
 };
