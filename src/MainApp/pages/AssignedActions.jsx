@@ -4,16 +4,19 @@ import {
 	BreadcrumbLink,
 	Box,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
-const PendingActions = () => {
+const AssignedActions = () => {
 	return (
 		<Box p="6">
 			<Breadcrumb separator="/">
 				<BreadcrumbItem>
-					<BreadcrumbLink href="#">App</BreadcrumbLink>
+					<BreadcrumbLink to="/" as={Link}>
+						App
+					</BreadcrumbLink>
 				</BreadcrumbItem>
 				<BreadcrumbItem>
-					<BreadcrumbLink href="#">Pending Actions</BreadcrumbLink>
+					<span>Assigned Actions</span>
 				</BreadcrumbItem>
 			</Breadcrumb>
 
@@ -27,4 +30,4 @@ const PendingActions = () => {
 	);
 };
 
-export default PendingActions;
+export default AssignedActions;

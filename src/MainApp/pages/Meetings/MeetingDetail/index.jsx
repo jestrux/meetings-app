@@ -4,9 +4,12 @@ import {
 	BreadcrumbLink,
 	Box,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 
-const Files = () => {
+const MeetingDetail = () => {
+	const { state } = useLocation();
+	const { meetingId } = useParams();
+
 	return (
 		<Box p="6">
 			<Breadcrumb separator="/">
@@ -16,7 +19,12 @@ const Files = () => {
 					</BreadcrumbLink>
 				</BreadcrumbItem>
 				<BreadcrumbItem>
-					<span>Files</span>
+					<BreadcrumbLink to="/meetings" as={Link}>
+						Meetings
+					</BreadcrumbLink>
+				</BreadcrumbItem>
+				<BreadcrumbItem>
+					<span>{state?.meeting?.title || meetingId}</span>
 				</BreadcrumbItem>
 			</Breadcrumb>
 
@@ -30,4 +38,4 @@ const Files = () => {
 	);
 };
 
-export default Files;
+export default MeetingDetail;

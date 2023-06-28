@@ -5,6 +5,10 @@ export const AppContext = createContext({
 	setPageTitle: (newPageTitle) => {
 		console.log(newPageTitle);
 	},
+	backUrl: "",
+	setBackUrl: (newBackUrl) => {
+		console.log(newBackUrl);
+	},
 });
 
 export const useAppContext = () => {

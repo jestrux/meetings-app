@@ -11,17 +11,22 @@ import Dashboard from "./MainApp/pages/Dashboard";
 import Files from "./MainApp/pages/Files";
 import Meetings from "./MainApp/pages/Meetings";
 import NewMeeting from "./MainApp/pages/Meetings/NewMeeting";
-import PendingActions from "./MainApp/pages/PendingActions";
+import AssignedActions from "./MainApp/pages/AssignedActions";
 
 import { useAppContext } from "./providers/app";
 import { useEffect } from "react";
+import MeetingDetail from "./MainApp/pages/Meetings/MeetingDetail";
 
-function AppPage({ title, element }) {
-	const { setPageTitle } = useAppContext();
+function AppPage({ title, backUrl, element }) {
+	const { setPageTitle, setBackUrl } = useAppContext();
 
 	useEffect(() => {
-		setPageTitle(title);
+		setPageTitle(title ?? "");
 	}, [title, setPageTitle]);
+
+	useEffect(() => {
+		setBackUrl(backUrl ?? "");
+	}, [backUrl, setBackUrl]);
 
 	return element;
 }
@@ -41,8 +46,8 @@ const router = createBrowserRouter(
 				path="actions"
 				element={
 					<AppPage
-						title="Pending Actions"
-						element={<PendingActions />}
+						title="Assigned Actions"
+						element={<AssignedActions />}
 					/>
 				}
 			/>
@@ -56,7 +61,21 @@ const router = createBrowserRouter(
 				<Route
 					path="add"
 					element={
-						<AppPage title="New Meeting" element={<NewMeeting />} />
+						<AppPage
+							title="New Meeting"
+							backUrl="/meetings"
+							element={<NewMeeting />}
+						/>
+					}
+				/>
+				<Route
+					path=":meetingId"
+					element={
+						<AppPage
+							title=""
+							backUrl="/meetings"
+							element={<MeetingDetail />}
+						/>
 					}
 				/>
 			</Route>

@@ -8,6 +8,10 @@ import {
 	Button,
 	Avatar,
 	Stack,
+	Input,
+	InputGroup,
+	InputLeftElement,
+	IconButton,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
@@ -15,6 +19,8 @@ import {
 	CalendarIcon,
 	ClockIcon,
 	DocumentIcon,
+	MagnifyingGlassIcon,
+	ChevronLeftIcon,
 } from "@heroicons/react/24/outline";
 import { useAuthContext } from "../providers/auth";
 import { Link, useMatch } from "react-router-dom";
@@ -41,7 +47,7 @@ const SidebarLink = ({ url, icon, label }) => {
 
 const AppLayout = ({ children }) => {
 	const { authUser, logout } = useAuthContext();
-	const { pageTitle } = useAppContext();
+	const { pageTitle, backUrl } = useAppContext();
 
 	return (
 		<Box display="flex" bg="gray.100" style={{ height: "100vh" }}>
@@ -87,7 +93,7 @@ const AppLayout = ({ children }) => {
 					<SidebarLink
 						url="/actions"
 						icon={<ClockIcon width="18px" />}
-						label="Pending Actions"
+						label="Assigned Actions"
 					/>
 				</Stack>
 			</Box>
@@ -110,9 +116,44 @@ const AppLayout = ({ children }) => {
 					pr="2"
 					borderBottom="1px solid #eee"
 				>
-					<Heading size="md" lineHeight="none">
-						{pageTitle}
-					</Heading>
+					<Box w="180px" display="flex" alignItems="center" gap="2.5">
+						{backUrl?.length > 0 && (
+							<Link to={backUrl}>
+								<IconButton
+									icon={<ChevronLeftIcon width="20" />}
+								/>
+							</Link>
+						)}
+						<Heading mt="1" size="md" lineHeight="none">
+							{pageTitle}
+						</Heading>
+					</Box>
+
+					<Box
+						h="full"
+						display="flex"
+						flex="1"
+						alignItems="center"
+						justifyContent="center"
+						mx="4"
+					>
+						<Box w="full" maxW="md">
+							<InputGroup>
+								<InputLeftElement opacity="0.4">
+									<MagnifyingGlassIcon width="20" />
+								</InputLeftElement>
+
+								<Input
+									shadow="sm"
+									placeholder="Search for meetings, files and assigned actions..."
+									_placeholder={{
+										color: "black",
+										opacity: "0.4",
+									}}
+								/>
+							</InputGroup>
+						</Box>
+					</Box>
 
 					<Menu>
 						<MenuButton

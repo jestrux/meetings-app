@@ -30,15 +30,17 @@ const Meetings = () => {
 
 	return (
 		<Box p="6" minHeight="100%">
-			<Button
-				colorScheme="green"
-				variant="outline"
-				size="sm"
-				leftIcon={<PlusIcon width="14" strokeWidth="2.5" />}
-				mb="6"
-			>
-				New Meeting&nbsp;
-			</Button>
+			<Link to="add">
+				<Button
+					colorScheme="green"
+					variant="outline"
+					size="sm"
+					leftIcon={<PlusIcon width="14" strokeWidth="2.5" />}
+					mb="6"
+				>
+					New Meeting&nbsp;
+				</Button>
+			</Link>
 
 			{loading && (
 				<Flex alignItems="center" justifyContent="center" gap="3">
@@ -53,68 +55,78 @@ const Meetings = () => {
 				</Flex>
 			)}
 
-			<SimpleGrid columns={2} gap={3}>
+			<SimpleGrid columns={2} gap={5}>
 				{!loading &&
 					meetings.map((meeting, index) => {
 						return (
-							<Card key={index}>
-								<CardBody>
-									<Heading size="md" mb="2.5">
-										{meeting.title}
-									</Heading>
+							<Link
+								key={index}
+								to={meeting._rowId}
+								state={{ meeting }}
+								style={{ textDecoration: "none" }}
+							>
+								<Card>
+									<CardBody>
+										<Heading size="md" mb="2.5">
+											{meeting.title}
+										</Heading>
 
-									<Text mb="6" fontSize="md">
-										{format(
-											new Date(meeting.date),
-											"EEEE, MMMM dd"
-										)}{" "}
-										&nbsp;&middot;&nbsp;{" "}
-										{meeting.start_time} &mdash;{" "}
-										{meeting.end_time}
-									</Text>
+										<Text mb="6" fontSize="md">
+											{format(
+												new Date(meeting.date),
+												"EEEE, MMMM dd"
+											)}{" "}
+											&nbsp;&middot;&nbsp;{" "}
+											{meeting.start_time} &mdash;{" "}
+											{meeting.end_time}
+										</Text>
 
-									<Flex justifyContent="space-between">
-										<Stack spacing={0}>
-											<Box fontSize="sm" mb="1.5">
-												Organiser
-											</Box>
-											<Stack direction="row">
-												<Avatar
-													size="sm"
-													src={meeting.creator.avatar}
-												/>
-												<Box fontSize="sm" mt="1">
-													{meeting.creator.name}
+										<Flex justifyContent="space-between">
+											<Stack spacing={0}>
+												<Box fontSize="sm" mb="1.5">
+													Organiser
 												</Box>
+												<Stack direction="row">
+													<Avatar
+														size="sm"
+														src={
+															meeting.creator
+																.avatar
+														}
+													/>
+													<Box fontSize="sm" mt="1">
+														{meeting.creator.name}
+													</Box>
+												</Stack>
 											</Stack>
-										</Stack>
 
-										<Stack spacing={0}>
-											<Box fontSize="sm" mb="1.5">
-												Attendees
-											</Box>
-											<AvatarGroup size="sm" max={8}>
-												{meeting.attendees.map(
-													(attendee, index) => {
-														return (
-															<Avatar
-																name={
-																	attendee.name
-																}
-																key={index}
-																size="sm"
-																src={
-																	attendee.avatar
-																}
-															/>
-														);
-													}
-												)}
-											</AvatarGroup>
-										</Stack>
-									</Flex>
-								</CardBody>
-							</Card>
+											<Stack spacing={0}>
+												<Box fontSize="sm" mb="1.5">
+													Attendees
+												</Box>
+												<AvatarGroup size="sm" max={8}>
+													{meeting.attendees.map(
+														(attendee, index) => {
+															return (
+																<Avatar
+																	name={
+																		attendee.name
+																	}
+																	key={index}
+																	size="sm"
+																	src={
+																		attendee.avatar
+																	}
+																/>
+															);
+														}
+													)}
+												</AvatarGroup>
+											</Stack>
+										</Flex>
+									</CardBody>
+								</Card>
+							</Link>
 						);
 					})}
 			</SimpleGrid>

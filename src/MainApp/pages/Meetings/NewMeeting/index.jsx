@@ -1,11 +1,10 @@
 import { Box } from "@chakra-ui/react";
 
-import Attendees from "./Attendees";
 import NewMeetingForm from "./NewMeetingForm";
 
 const NewMeeting = ({ onMeetingCreated }) => {
 	return (
-		<Box>
+		<Box p="6">
 			<NewMeetingForm onMeetingCreated={onMeetingCreated} />
 		</Box>
 	);
