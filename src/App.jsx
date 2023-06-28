@@ -1,25 +1,20 @@
 import Login from "./Login";
-import MainApp from "./MainApp";
-import useLocalStorageState from "./hooks/useLocalStorageState";
+
+import AuthProvider from "./providers/auth/provider";
 import { AuthContext } from "./providers/auth";
+import AppProvider from "./providers/app/provider";
+import AppRouter from "./AppRouter";
 
-function App() {
-	const [authUser, setAuthUser] = useLocalStorageState("authUser", null);
-	const authContextValues = {
-		authUser,
-		login(user) {
-			setAuthUser(user);
-		},
-		logout() {
-			setAuthUser(null);
-		},
-	};
-
+export default function App() {
 	return (
-		<AuthContext.Provider value={authContextValues}>
-			{!authUser?.id ? <Login /> : <MainApp />}
-		</AuthContext.Provider>
+		<AuthProvider>
+			<AppProvider>
+				<AuthContext.Consumer>
+					{({ authUser }) =>
+						!authUser?.id ? <Login /> : <AppRouter />
+					}
+				</AuthContext.Consumer>
+			</AppProvider>
+		</AuthProvider>
 	);
 }
-
-export default App;

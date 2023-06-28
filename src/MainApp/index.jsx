@@ -1,9 +1,6 @@
 import { useState } from "react";
 import AppLayout from "./AppLayout";
-import Dashboard from "./pages/Dashboard";
-import Meetings from "./pages/Meetings";
-import PendingActions from "./pages/PendingActions";
-import Files from "./pages/Files";
+import { Outlet } from "react-router-dom";
 
 const MainApp = () => {
 	const [currentPage, setCurrentPage] = useState("Meetings");
@@ -16,10 +13,7 @@ const MainApp = () => {
 				minHeight: "100vh",
 			}}
 		>
-			{currentPage == "Dashboard" && <Dashboard />}
-			{currentPage == "Meetings" && <Meetings />}
-			{currentPage == "Pending Actions" && <PendingActions />}
-			{currentPage == "Files" && <Files />}
+			<Outlet />
 		</AppLayout>
 	);
 };

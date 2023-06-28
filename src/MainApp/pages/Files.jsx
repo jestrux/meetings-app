@@ -13,7 +13,7 @@ const Files = () => {
 					<BreadcrumbLink href="#">App</BreadcrumbLink>
 				</BreadcrumbItem>
 				<BreadcrumbItem>
-					<BreadcrumbLink href="#">Pending Actions</BreadcrumbLink>
+					<BreadcrumbLink href="#">Files</BreadcrumbLink>
 				</BreadcrumbItem>
 			</Breadcrumb>
 

@@ -17,9 +17,32 @@ import {
 	DocumentIcon,
 } from "@heroicons/react/24/outline";
 import { useAuthContext } from "../providers/auth";
+import { Link, useMatch } from "react-router-dom";
+import { useAppContext } from "../providers/app";
 
-const AppLayout = ({ children, onChangePage, currentPage }) => {
+const SidebarLink = ({ url, icon, label }) => {
+	const match = useMatch(url);
+	const active = Boolean(match);
+
+	return (
+		<Link to={url}>
+			<Button
+				w="full"
+				justifyContent="flex-start"
+				color={active ? "green.700" : "gray.500"}
+				variant={active ? "solid" : "ghost"}
+				leftIcon={icon}
+			>
+				<Box ml="2">{label}</Box>
+			</Button>
+		</Link>
+	);
+};
+
+const AppLayout = ({ children }) => {
 	const { authUser, logout } = useAuthContext();
+	const { pageTitle } = useAppContext();
+
 	return (
 		<Box display="flex" bg="gray.100" style={{ height: "100vh" }}>
 			<Box
@@ -43,57 +66,29 @@ const AppLayout = ({ children, onChangePage, currentPage }) => {
 					<Heading size="md">NIC Meetings</Heading>
 				</Box>
 				<Stack p="3">
-					<Button
-						justifyContent="flex-start"
-						color={
-							currentPage == "Dashboard"
-								? "green.700"
-								: "gray.500"
-						}
-						variant={currentPage == "Dashboard" ? "solid" : "ghost"}
-						leftIcon={<HomeIcon width="18px" />}
-						onClick={() => onChangePage("Dashboard")}
-					>
-						<Box ml="2">Dashboard</Box>
-					</Button>
+					<SidebarLink
+						url="/"
+						icon={<HomeIcon width="18px" />}
+						label="Dashboard"
+					/>
 
-					<Button
-						justifyContent="flex-start"
-						color={
-							currentPage == "Meetings" ? "green.700" : "gray.500"
-						}
-						variant={currentPage == "Meetings" ? "solid" : "ghost"}
-						leftIcon={<CalendarIcon width="18px" />}
-						onClick={() => onChangePage("Meetings")}
-					>
-						<Box ml="2">Meetings</Box>
-					</Button>
-					<Button
-						justifyContent="flex-start"
-						color={
-							currentPage == "Pending Actions"
-								? "green.700"
-								: "gray.500"
-						}
-						variant={
-							currentPage == "Pending Actions" ? "solid" : "ghost"
-						}
-						leftIcon={<ClockIcon width="18px" />}
-						onClick={() => onChangePage("Pending Actions")}
-					>
-						<Box ml="2">Pending Actions</Box>
-					</Button>
-					<Button
-						justifyContent="flex-start"
-						color={
-							currentPage == "Files" ? "green.700" : "gray.500"
-						}
-						variant={currentPage == "Files" ? "solid" : "ghost"}
-						leftIcon={<DocumentIcon width="18px" />}
-						onClick={() => onChangePage("Files")}
-					>
-						<Box ml="2">Files</Box>
-					</Button>
+					<SidebarLink
+						url="/meetings"
+						icon={<CalendarIcon width="18px" />}
+						label="Meetings"
+					/>
+
+					<SidebarLink
+						url="/files"
+						icon={<DocumentIcon width="18px" />}
+						label="Files"
+					/>
+
+					<SidebarLink
+						url="/actions"
+						icon={<ClockIcon width="18px" />}
+						label="Pending Actions"
+					/>
 				</Stack>
 			</Box>
 			<Box
@@ -116,7 +111,7 @@ const AppLayout = ({ children, onChangePage, currentPage }) => {
 					borderBottom="1px solid #eee"
 				>
 					<Heading size="md" lineHeight="none">
-						{currentPage}
+						{pageTitle}
 					</Heading>
 
 					<Menu>
