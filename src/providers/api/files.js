@@ -1,7 +1,8 @@
 import { get, post, remove } from "./request";
 
 export const fetchMeetingFiles = (meetingId) => {
-	return get("/api/MeetingFile" + meetingId ? `?whereMeeting=${meetingId}` : "");
+	console.log("meetingId---",meetingId)
+	return get("/api/MeetingFile");
 };
 
 export const addMeetingFile = (payload) => {
