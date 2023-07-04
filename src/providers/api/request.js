@@ -1,3 +1,5 @@
+import { getValueFromLocalStorage } from "../../hooks/useLocalStorageState";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const get = (endpoint) => {
@@ -28,7 +30,8 @@ export const request = ({ method = "GET", endpoint = "", data }) => {
 		headers: {
 			Accept: "application/json",
 			"Content-Type": "application/json",
-			// Authorization: "Bearer " + localStorage.getItem("authUser").token,
+			Authorization:
+				"Bearer " + getValueFromLocalStorage("authUser")?.token,
 		},
 	};
 

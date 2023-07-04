@@ -19,8 +19,9 @@ import {
 	SimpleGrid,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import useAPI from "./hooks/useAPI";
 import { useAuthContext } from "./providers/auth";
+import { login } from "./providers/api";
+import { useMutation } from "@tanstack/react-query";
 
 function formDataObject(form) {
 	return Array.from(new FormData(form)).reduce(
@@ -34,9 +35,11 @@ function formDataObject(form) {
 
 const Login = () => {
 	const authContext = useAuthContext();
-	const [login, { loading: authenticating }] = useAPI("/login");
 	const [showPassword, setShowPassword] = useState(null);
 	const [message, setMessage] = useState(null);
+	const { isLoading: authenticating, mutateAsync } = useMutation({
+		mutationFn: login,
+	});
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -44,9 +47,9 @@ const Login = () => {
 
 		setMessage(null);
 
-		const res = await login(formDataObject(form));
+		const res = await mutateAsync(formDataObject(form));
 
-		if (res?.id) {
+		if (res?._id) {
 			setMessage({
 				type: "success",
 				content: "We'll get back to you soon.",

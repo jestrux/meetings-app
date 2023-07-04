@@ -38,7 +38,7 @@ const NewMeetingForm = ({ onMeetingCreated }) => {
 		e.preventDefault();
 		const formData = new FormData(e.target);
 		const data = Object.fromEntries(formData);
-		data["creator"] = [authContext.authUser._rowId];
+		data["creator"] = authContext.authUser._id;
 		data.date = new Date(data.date).getTime();
 		data.start_time = getMeridiem(data.start_time);
 		data.end_time = getMeridiem(data.end_time);

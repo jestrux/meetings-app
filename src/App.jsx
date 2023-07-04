@@ -11,7 +11,7 @@ export default function App() {
 			<AppProvider>
 				<AuthContext.Consumer>
 					{({ authUser }) =>
-						!authUser?.id ? <Login /> : <AppRouter />
+						!authUser?._id ? <Login /> : <AppRouter />
 					}
 				</AuthContext.Consumer>
 			</AppProvider>

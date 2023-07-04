@@ -12,21 +12,17 @@ import {
 	Spinner,
 	Button,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import useAPI from "../../../hooks/useAPI";
-import { useEffect, useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import { fetchMeetings } from "../../../providers/api";
 
 const Meetings = () => {
-	const [getMeetings, { loading }] = useAPI("/meetings");
-	const [meetings, setMeetings] = useState([]);
-
-	useEffect(() => {
-		getMeetings().then((data) => {
-			setMeetings(data);
-		});
-	}, []);
+	const { isLoading: loading, data: meetings } = useQuery({
+		queryKey: ["meetings"],
+		queryFn: fetchMeetings,
+	});
 
 	return (
 		<Box p="6" minHeight="100%">
@@ -57,11 +53,12 @@ const Meetings = () => {
 
 			<SimpleGrid columns={2} gap={5}>
 				{!loading &&
+					meetings &&
 					meetings.map((meeting, index) => {
 						return (
 							<Link
 								key={index}
-								to={meeting._rowId}
+								to={meeting._id}
 								state={{ meeting }}
 								style={{ textDecoration: "none" }}
 							>
