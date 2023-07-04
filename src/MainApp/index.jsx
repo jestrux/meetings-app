@@ -1,26 +1,21 @@
 import { useState } from "react";
 import AppLayout from "./AppLayout";
-import Dashboard from "./pages/Dashboard";
-import NewMeeting from "./pages/NewMeeting";
+import { Outlet } from "react-router-dom";
 
-const App = () => {
-	const [currentPage, setCurrentPage] = useState("New Meeting");
-	const handleChangePage = (e) => {
-		setCurrentPage(e.key);
-	};
+const MainApp = () => {
+	const [currentPage, setCurrentPage] = useState("Meetings");
 
 	return (
 		<AppLayout
 			currentPage={currentPage}
-			onChangePage={handleChangePage}
+			onChangePage={setCurrentPage}
 			style={{
 				minHeight: "100vh",
 			}}
 		>
-			{currentPage == "Dashboard" && <Dashboard />}
-			{currentPage == "New Meeting" && <NewMeeting />}
+			<Outlet />
 		</AppLayout>
 	);
 };
 
-export default App;
+export default MainApp;

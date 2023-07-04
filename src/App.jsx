@@ -1,8 +1,20 @@
 import Login from "./Login";
-import MainApp from "./MainApp";
 
-function App() {
-	return <Login />;
+import AuthProvider from "./providers/auth/provider";
+import { AuthContext } from "./providers/auth";
+import AppProvider from "./providers/app/provider";
+import AppRouter from "./AppRouter";
+
+export default function App() {
+	return (
+		<AuthProvider>
+			<AppProvider>
+				<AuthContext.Consumer>
+					{({ authUser }) =>
+						!authUser?._id ? <Login /> : <AppRouter />
+					}
+				</AuthContext.Consumer>
+			</AppProvider>
+		</AuthProvider>
+	);
 }
-
-export default App;

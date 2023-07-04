@@ -1,89 +1,164 @@
 import { useState } from "react";
+import {
+	Card,
+	Heading,
+	Button,
+	IconButton,
+	Input,
+	InputGroup,
+	InputRightElement,
+	FormControl,
+	FormLabel,
+	Stack,
+	Box,
+	Alert,
+	AlertIcon,
+	AlertTitle,
+	AlertDescription,
+	CloseButton,
+	SimpleGrid,
+} from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useAuthContext } from "./providers/auth";
+import { login } from "./providers/api";
+import { useMutation } from "@tanstack/react-query";
+
+function formDataObject(form) {
+	return Array.from(new FormData(form)).reduce(
+		(agg, [key, value]) => ({
+			...agg,
+			[key]: value,
+		}),
+		{}
+	);
+}
 
 const Login = () => {
+	const authContext = useAuthContext();
+	const [showPassword, setShowPassword] = useState(null);
+	const [message, setMessage] = useState(null);
+	const { isLoading: authenticating, mutateAsync } = useMutation({
+		mutationFn: login,
+	});
 
-	const [isLoading, setLoading] = useState(false)
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		const form = e.target;
 
-	const handleSubmitForm = (e) => {
-		e.preventDefault()
-		setLoading(true)
-		let form = new FormData(e.currentTarget)
-		let email = form.get("email")
-		let password = form.get("password")
+		setMessage(null);
 
-		console.log(email)
-		console.log(password)
+		const res = await mutateAsync(formDataObject(form));
 
-		setLoading(false)
-		e.currentTarget.reset()
-	}
+		if (res?._id) {
+			setMessage({
+				type: "success",
+				content: "We'll get back to you soon.",
+			});
+
+			form.reset();
+
+			authContext.login(res);
+		} else {
+			setMessage({
+				type: "error",
+				content: "Whoops! Wrong credentials!",
+			});
+		}
+	};
+
 	return (
-		<div
-			className="vh-100 vw-100 d-flex align-items-center justify-content-center"
-			style={{ backgroundColor: "#f5f5f5" }}
+		<Box
+			display="flex"
+			alignItems="center"
+			justifyContent="center"
+			style={{ backgroundColor: "#f5f5f5", height: "100vh" }}
 		>
-			<main className="bg-white shadow-sm w-75 rounded-lg row overflow-hidden">
-				<div className="col-6 border p-0 position-relative">
-					<img
-						className="position-absolute w-100 h-100"
-						src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxNjE2NXwwfDF8c2VhcmNofDF8fGZhbmN5JTIwaG91c2V8ZW58MHx8fHwxNjg3NDEzNTg3fDA&ixlib=rb-4.0.3&q=80&w=1080"
-						alt=""
-						style={{ objectFit: "cover" }}
-					/>
-				</div>
+			<Box w="full" maxW="5xl">
+				<Card overflow="hidden">
+					<SimpleGrid columns={2}>
+						<Box position="relative">
+							<img
+								className="position-absolute w-100 h-100"
+								src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxNjE2NXwwfDF8c2VhcmNofDF8fGZhbmN5JTIwaG91c2V8ZW58MHx8fHwxNjg3NDEzNTg3fDA&ixlib=rb-4.0.3&q=80&w=1080"
+								alt=""
+								style={{ objectFit: "cover" }}
+							/>
+						</Box>
 
-				<div
-					className="col"
-					style={{ paddingTop: "3.5rem", paddingBottom: "4rem" }}
-				>
-					<div className="p-5">
-						<h3 className="mb-3">Sign in to NIC Meetings</h3>
+						<Box py="24" px="12">
+							<Heading size="lg" mb="5">
+								Sign in to NIC Meetings
+							</Heading>
 
-						<div
-							id="alertMessage"
-							className="alert alert-success alert-dismissible fade show"
-							role="alert"
-							style={{ display: "none" }}
-						>
-							<strong>Success!</strong> We'll get back to you
-							soon.
-							<button
-								type="button"
-								className="close"
-								data-dismiss="alert"
-								aria-label="Close"
-							>
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
+							{message && (
+								<Alert
+									mb="4"
+									status={message.type}
+									variant="subtle"
+								>
+									<AlertIcon />
+									<AlertTitle textTransform="capitalize">
+										{message.type}!
+									</AlertTitle>
+									<AlertDescription>
+										{message.content}
+									</AlertDescription>
+									<CloseButton
+										alignSelf="flex-start"
+										position="absolute"
+										right={1}
+										top={1}
+										onClick={() => setMessage(null)}
+									/>
+								</Alert>
+							)}
 
-						<form onClick={handleSubmitForm}>
-							<div className="form-group">
-								<label htmlFor="exampleInputEmail1">
-									Email address
-								</label>
-								<input
-									type="email"
-									name="email"
-									className="form-control form-control-lg"
-									id="exampleInputEmail1"
-									required={true}
-									aria-describedby="emailHelp"
-								/>
-							</div>
-							<div className="form-group">
-								<label htmlFor="exampleInputPassword1">
-									Password
-								</label>
-								<input
-									type="password"
-									name="password"
-									className="form-control form-control-lg"
-									required={true}
-									id="exampleInputPassword1"
-								/>
-							</div>
-							<div className="form-group form-check form-check-lg">
+							<form onSubmit={handleLogin}>
+								<Stack spacing={4}>
+									<FormControl w="full">
+										<FormLabel>Email address</FormLabel>
+										<Input
+											size="lg"
+											type="email"
+											name="email"
+										/>
+									</FormControl>
+
+									<FormControl w="full">
+										<FormLabel>Password</FormLabel>
+										<InputGroup>
+											<Input
+												size="lg"
+												type={
+													showPassword
+														? "text"
+														: "password"
+												}
+												name="password"
+											/>
+											<InputRightElement>
+												<IconButton
+													mt="2"
+													mr="2"
+													variant="ghost"
+													icon={
+														!showPassword ? (
+															<ViewIcon />
+														) : (
+															<ViewOffIcon />
+														)
+													}
+													onClick={() =>
+														setShowPassword(
+															!showPassword
+														)
+													}
+												/>
+											</InputRightElement>
+										</InputGroup>
+									</FormControl>
+
+									{/* <div className="form-group form-check form-check-lg">
 								<input
 									type="checkbox"
 									className="form-check-input"
@@ -95,19 +170,25 @@ const Login = () => {
 								>
 									Remember me
 								</label>
-							</div>
-							<button
-								type="submit"
-								className="btn btn-block btn-lg btn-primary"
-								disabled={isLoading}
-							>
-								{isLoading? 'loading...': 'submit'}
-							</button>
-						</form>
-					</div>
-				</div>
-			</main>
-		</div>
+							</div> */}
+									<Box mt="1">
+										<Button
+											w="full"
+											type="submit"
+											size="lg"
+											isLoading={authenticating}
+											loadingText="Please wait..."
+										>
+											Submit
+										</Button>
+									</Box>
+								</Stack>
+							</form>
+						</Box>
+					</SimpleGrid>
+				</Card>
+			</Box>
+		</Box>
 	);
 };
 
